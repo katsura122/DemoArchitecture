@@ -1,0 +1,138 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+
+        applicationId globalConfiguration.getAt("androidApplicationId")
+        versionCode globalConfiguration.getAt("androidVersionCode")
+        versionName globalConfiguration.getAt("androidVersionName")
+        testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
+        testApplicationId globalConfiguration.getAt("testApplicationId")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude '.readme'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/README.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'InvalidPackage'   //Some libraries have issues with this.
+    }
+
+    signingConfigs {
+        debug {
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            storeFile file("cdsb_appsignkey")
+            storePassword "cdsbapp"
+            keyAlias "tanzi"
+            keyPassword "cdsbtz"
+        }
+
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled false                 //混淆
+            zipAlignEnabled true                //Zipalign优化
+            shrinkResources false               //移除无用的resource文件
+            signingConfig signingConfigs.debug
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled false                 //混淆
+            zipAlignEnabled true                //Zipalign优化
+            shrinkResources false               //移除无用的resource文件
+            signingConfig signingConfigs.release
+            proguardFiles 'proguard-rules.pro'  //加载默认混淆配置文件
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+
+    def appDependencies = rootProject.ext.appDependencies
+    def developmentDependencies = rootProject.ext.developmentDependencies
+
+    compile project(':library')
+
+    apt appDependencies.butterKnifeCompiler
+    compile appDependencies.butterKnife
+    compile appDependencies.appcompat
+    compile appDependencies.rxJava
+    compile appDependencies.rxAndroid
+    compile appDependencies.rxBinding
+    compile appDependencies.rxBindingSupport
+    compile appDependencies.rxBindingAppcompat
+    compile appDependencies.rxBindingDesign
+    compile appDependencies.rxBindingRv
+    compile appDependencies.design
+    compile appDependencies.greendao
+    compile appDependencies.okHttp
+    compile appDependencies.okHttpLogIntercepor
+    compile appDependencies.gson
+    compile appDependencies.retrofit
+    compile appDependencies.retrofitConverter
+    compile appDependencies.retrofitAdapter
+    compile appDependencies.rvAdapterHelper
+    compile appDependencies.glide
+    compile appDependencies.stetho
+    provided appDependencies.javaxAnnotation
+
+    //Development
+    compile developmentDependencies.leakCanary
+}
+
+greendao {
+    schemaVersion 1
+    daoPackage 'com.katsuraf.demoarchitecture.db.model'
+    targetGenDir 'src/main/java'
+}
