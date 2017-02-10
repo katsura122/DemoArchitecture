@@ -1,7 +1,7 @@
 package com.katsuraf.demoarchitecture.net.exception;
 
 public class ResultException extends RuntimeException {
-    public static final int N0_DATA = 2002;
+    public static final int NO_DATA = 2002;
 
     public static final String MSG_NO_DATA_FOUND = "no data";
 

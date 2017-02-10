@@ -3,6 +3,8 @@ package com.katsuraf.demoarchitecture.model.imp;
 import android.content.Context;
 
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
+import com.katsuraf.demoarchitecture.db.bean.PageStateEntity;
+import com.katsuraf.demoarchitecture.db.cache.ListCache;
 import com.katsuraf.demoarchitecture.model.IMainListModel;
 import com.katsuraf.demoarchitecture.net.ApiService;
 import com.katsuraf.demoarchitecture.net.DefaultSubscriber;
@@ -16,33 +18,57 @@ import com.katsuraf.demoarchitecture.ui.fragment.MainListFragment;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainListModel implements IMainListModel {
 
     private Context mContext;
-    private MainListRequest mMainListRequest;
+    private MainListRequest mMainListRequest = new MainListRequest();
     private OnHttpCallBack<List<ListItemEntity>> mCallBack;
+    private final ListCache mListCache;
 
-    public MainListModel(Context context, OnHttpCallBack<List<ListItemEntity>> callBack) {
+    public MainListModel(Context context, ListCache listCache, OnHttpCallBack<List<ListItemEntity>> callBack) {
         this.mContext = context;
         this.mCallBack = callBack;
+        this.mListCache = listCache;
     }
 
     @Override
     public void requestData(MainListFragment.LoadMode loadMode) {
-        MainListRequest listRequest = new MainListRequest();
-        if (loadMode != MainListFragment.LoadMode.LOAD_MORE) {
-            listRequest.setPage(1);
-            listRequest.setTimestamp(0L);
+        switch (loadMode) {
+            case FIRST_LOAD:
+            case REFRESH:
+                mMainListRequest.setPage(1);
+                mMainListRequest.setTimestamp(0L);
+                break;
+            case LOAD_MORE:
+                PageStateEntity pageState = mListCache.getPageState(0);
+                mMainListRequest.setPage(pageState.getPage() + 1);
+                mMainListRequest.setTimestamp(pageState.getTimestamp());
+                break;
+            default:
+                break;
         }
         RestClient.newInstance()
                 .create(ApiService.class)
-                .getListData(listRequest)
+                .getListData(mMainListRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(saveToCache)
                 .subscribe(new MainListSubscriber(mContext));
     }
+
+    private final Consumer<ListResponse> saveToCache = listResponse -> {
+        if (listResponse != null) {
+            if (mMainListRequest.getPage() == 1) {
+                MainListModel.this.mListCache.clearList(mMainListRequest.getListType());
+            }
+            MainListModel.this.mListCache.putListData(listResponse.getList(), mMainListRequest.getListType());
+            MainListModel.this.mListCache.putPageState(mMainListRequest.getListType(),
+                    mMainListRequest.getPage(), mMainListRequest.getTimestamp());
+        }
+    };
 
     private final class MainListSubscriber extends DefaultSubscriber<ListResponse> {
 

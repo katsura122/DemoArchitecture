@@ -35,7 +35,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
                 if (jsonObject.has("Data")) {
                     return gson.fromJson(jsonObject.getString("Data"), type);
                 } else {
-                    throw new ResultException(ResultException.N0_DATA,
+                    throw new ResultException(ResultException.NO_DATA,
                             ResultException.MSG_NO_DATA_FOUND);
                 }
             } else {

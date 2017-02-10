@@ -55,6 +55,12 @@ public class DBHelper {
                 .list();
     }
 
+    public boolean hasListData(int listType) {
+        return mListItemEntityDao.queryBuilder()
+                .where(ListItemEntityDao.Properties.Type.eq(listType))
+                .buildCount().count() > 0;
+    }
+
     public void deleteListData(int listType) {
         QueryBuilder<ListItemEntity> queryBuilder = mListItemEntityDao.queryBuilder();
         DeleteQuery<ListItemEntity> deleteQuery =
