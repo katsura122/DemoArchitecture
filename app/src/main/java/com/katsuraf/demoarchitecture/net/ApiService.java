@@ -9,6 +9,6 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    @POST("GetListData")
+    @POST("HomePage")
     Observable<ListResponse> getListData(@Body MainListRequest type);
 }

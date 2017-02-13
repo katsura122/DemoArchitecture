@@ -18,6 +18,7 @@ package com.katsuraf.demoarchitecture;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.katsuraf.demoarchitecture.db.DBHelper;
 import com.squareup.leakcanary.LeakCanary;
 
 /**

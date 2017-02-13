@@ -9,6 +9,8 @@ import com.katsuraf.demoarchitecture.constants.NetConstant;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Singleton;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -20,7 +22,8 @@ public class OkHttpClientProvider {
         this.context = context;
     }
 
-    public static OkHttpClient getSimpleClient() {
+    @Singleton
+    public OkHttpClient getSimpleClient() {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.connectTimeout(NetConstant.DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         builder.readTimeout(NetConstant.DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
@@ -28,6 +31,7 @@ public class OkHttpClientProvider {
         return builder.build();
     }
 
+    @Singleton
     public OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.connectTimeout(NetConstant.DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
@@ -40,7 +44,7 @@ public class OkHttpClientProvider {
             builder.addNetworkInterceptor(new StethoInterceptor());
             builder.retryOnConnectionFailure(true);
         }
-        builder.addInterceptor(new UserAgentInterceptor(UserAgent.getInstance(context)));
+        builder.addInterceptor(new UserAgentInterceptor(new UserAgent(context)));
         setHttpResponseCache(builder, context.getApplicationContext());
         return builder.build();
     }

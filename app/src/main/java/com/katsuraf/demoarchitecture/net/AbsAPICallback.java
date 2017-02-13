@@ -89,6 +89,11 @@ public abstract class AbsAPICallback<T> extends DisposableObserver<T> {
         }
     }
 
+    @Override
+    public void onComplete() {
+
+    }
+
     /**
      * 错误回调
      */

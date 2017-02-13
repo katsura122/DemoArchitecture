@@ -18,6 +18,7 @@ ext {
     rxAndroidVersion = '2.0.1'
     rxBindingVersion = '1.0.0'
     javaxAnnotationVersion = '1.0'
+    javaxInjectVersion = '1'
     okHttpVersion = '3.4.1'
     gsonVersion = '2.7'
     designVersion = '23.4.0'
@@ -41,9 +42,8 @@ ext {
             rxBinding          : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
             rxBindingSupport   : "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}",
             rxBindingAppcompat : "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${rxBindingVersion}",
-            rxBindingDesign    : "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}",
-            rxBindingRv        : "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${rxBindingVersion}",
             javaxAnnotation    : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject        : "javax.inject:javax.inject:${javaxInjectVersion}",
             design             : "com.android.support:design:${designVersion}",
             greendao           : "org.greenrobot:greendao:${greendaoVersion}",
             okHttp             : "com.squareup.okhttp3:okhttp:${okHttpVersion}",

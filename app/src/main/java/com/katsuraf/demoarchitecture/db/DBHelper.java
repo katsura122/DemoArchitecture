@@ -2,7 +2,6 @@ package com.katsuraf.demoarchitecture.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
 import com.katsuraf.demoarchitecture.db.bean.PageStateEntity;
@@ -16,32 +15,25 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class DBHelper {
-    private static DBHelper msInstance;
     private ListItemEntityDao mListItemEntityDao;
     private PageStateEntityDao mPageStateEntityDao;
 
-    private DBHelper() {
+    public DBHelper(Context context) {
+        init(context);
     }
 
-    public static DBHelper getInstance() {
-        if (msInstance == null) {
-            Log.e("", "You must call init method first in your application");
-        }
-        return msInstance;
-    }
-
-    public static void init(Context context) {
-        if (msInstance == null) {
-            msInstance = new DBHelper();
-            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,
-                    "news-db", null);
-            SQLiteDatabase db = helper.getReadableDatabase();
-            DaoMaster master = new DaoMaster(db);
-            DaoSession session = master.newSession();
-            msInstance.mListItemEntityDao = session.getListItemEntityDao();
-            msInstance.mPageStateEntityDao = session.getPageStateEntityDao();
-        }
+    private void init(Context context) {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,
+                "news-db", null);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        DaoMaster master = new DaoMaster(db);
+        DaoSession session = master.newSession();
+        mListItemEntityDao = session.getListItemEntityDao();
+        mPageStateEntityDao = session.getPageStateEntityDao();
     }
 
     public void insertListBeans(List<ListItemEntity> listEntities) {

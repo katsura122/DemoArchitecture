@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.katsuraf.demoarchitecture.R;
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
+import com.katsuraf.demoarchitecture.presenter.MainListPresenter;
 import com.katsuraf.demoarchitecture.ui.adapter.MainListAdapter;
 import com.katsuraf.demoarchitecture.ui.view.IMainListView;
 import com.katsuraf.demoarchitecture.utils.NetworkUtil;
@@ -42,6 +43,8 @@ public class MainListFragment extends BaseFragment implements IMainListView,
 
     private MainListAdapter mAdapter;
 
+    private MainListPresenter mPresenter;
+
     public enum LoadMode {
         FIRST_LOAD,
         REFRESH,
@@ -69,11 +72,13 @@ public class MainListFragment extends BaseFragment implements IMainListView,
 
     @Override
     protected void initViewsAndEvents() {
+        mPresenter = new MainListPresenter(getContext(), this);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadMode = LoadMode.FIRST_LOAD;
         initAdapter();
+        getListData();
     }
 
     @Override
@@ -97,7 +102,7 @@ public class MainListFragment extends BaseFragment implements IMainListView,
     }
 
     private void getListData() {
-
+        mPresenter.getListData(loadMode);
     }
 
     @Override
@@ -122,10 +127,8 @@ public class MainListFragment extends BaseFragment implements IMainListView,
 
     @Override
     public void showNoMore() {
-        if (mAdapter != null)
-            mAdapter.loadMoreEnd(true);
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setEnabled(true);
+        mAdapter.loadMoreEnd(true);
+        mSwipeRefreshLayout.setEnabled(true);
     }
 
     @Override

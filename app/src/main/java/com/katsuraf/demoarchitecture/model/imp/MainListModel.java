@@ -5,8 +5,8 @@ import android.content.Context;
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
 import com.katsuraf.demoarchitecture.db.bean.PageStateEntity;
 import com.katsuraf.demoarchitecture.db.cache.ListCache;
+import com.katsuraf.demoarchitecture.db.cache.ListCacheImpl;
 import com.katsuraf.demoarchitecture.model.IMainListModel;
-import com.katsuraf.demoarchitecture.net.ApiService;
 import com.katsuraf.demoarchitecture.net.DefaultSubscriber;
 import com.katsuraf.demoarchitecture.net.OnHttpCallBack;
 import com.katsuraf.demoarchitecture.net.RestClient;
@@ -28,10 +28,21 @@ public class MainListModel implements IMainListModel {
     private OnHttpCallBack<List<ListItemEntity>> mCallBack;
     private final ListCache mListCache;
 
-    public MainListModel(Context context, ListCache listCache, OnHttpCallBack<List<ListItemEntity>> callBack) {
+    private final Consumer<ListResponse> saveToCache = listResponse -> {
+        if (listResponse != null) {
+            if (mMainListRequest.getPage() == 1) {
+                MainListModel.this.mListCache.clearList(mMainListRequest.getListType());
+            }
+            MainListModel.this.mListCache.putListData(listResponse.getList(), mMainListRequest.getListType());
+            MainListModel.this.mListCache.putPageState(mMainListRequest.getListType(),
+                    mMainListRequest.getPage(), mMainListRequest.getTimestamp());
+        }
+    };
+
+    public MainListModel(Context context, OnHttpCallBack<List<ListItemEntity>> callBack) {
         this.mContext = context;
         this.mCallBack = callBack;
-        this.mListCache = listCache;
+        this.mListCache = new ListCacheImpl(context);
     }
 
     @Override
@@ -50,25 +61,14 @@ public class MainListModel implements IMainListModel {
             default:
                 break;
         }
-        RestClient.newInstance()
-                .create(ApiService.class)
+        new RestClient(mContext)
+                .getApiService()
                 .getListData(mMainListRequest)
+                .doOnNext(saveToCache)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(saveToCache)
                 .subscribe(new MainListSubscriber(mContext));
     }
-
-    private final Consumer<ListResponse> saveToCache = listResponse -> {
-        if (listResponse != null) {
-            if (mMainListRequest.getPage() == 1) {
-                MainListModel.this.mListCache.clearList(mMainListRequest.getListType());
-            }
-            MainListModel.this.mListCache.putListData(listResponse.getList(), mMainListRequest.getListType());
-            MainListModel.this.mListCache.putPageState(mMainListRequest.getListType(),
-                    mMainListRequest.getPage(), mMainListRequest.getTimestamp());
-        }
-    };
 
     private final class MainListSubscriber extends DefaultSubscriber<ListResponse> {
 
@@ -78,10 +78,12 @@ public class MainListModel implements IMainListModel {
 
         @Override
         protected void onError(ApiException ex) {
+            mCallBack.onFailed(ex.getDisplayMessage());
         }
 
         @Override
         protected void onPermissionError(ApiException ex) {
+            mCallBack.onFailed(ex.getDisplayMessage());
         }
 
         @Override
@@ -92,11 +94,6 @@ public class MainListModel implements IMainListModel {
         @Override
         public void onNext(ListResponse response) {
             mCallBack.onSuccessful(response.getList());
-        }
-
-        @Override
-        public void onComplete() {
-
         }
     }
 }

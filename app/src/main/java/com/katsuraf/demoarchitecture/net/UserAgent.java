@@ -6,6 +6,11 @@ import android.os.Build;
 import com.google.gson.annotations.SerializedName;
 import com.katsuraf.demoarchitecture.BuildConfig;
 
+import java.io.UnsupportedEncodingException;
+
+import javax.inject.Singleton;
+
+@Singleton
 class UserAgent {
 
     @SerializedName("Model")
@@ -35,23 +40,10 @@ class UserAgent {
     @SerializedName("VersionCode")
     private String appVersionCode = BuildConfig.VERSION_CODE + "";
 
-    private Context mContext;
+    private Context context;
 
-    private volatile static UserAgent sInstance = null;
-
-    private UserAgent(Context context) {
-        this.mContext = context;
-    }
-
-    public static UserAgent getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (UserAgent.class) {
-                if (sInstance == null) {
-                    sInstance = new UserAgent(context.getApplicationContext());
-                }
-            }
-        }
-        return sInstance;
+    public UserAgent(Context context) {
+        this.context = context;
     }
 
     public UserAgent build() {

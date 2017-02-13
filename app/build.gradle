@@ -112,9 +112,6 @@ dependencies {
     compile appDependencies.rxBinding
     compile appDependencies.rxBindingSupport
     compile appDependencies.rxBindingAppcompat
-    compile appDependencies.rxBindingDesign
-    compile appDependencies.rxBindingRv
-    compile appDependencies.design
     compile appDependencies.greendao
     compile appDependencies.okHttp
     compile appDependencies.okHttpLogIntercepor
@@ -125,10 +122,12 @@ dependencies {
     compile appDependencies.rvAdapterHelper
     compile appDependencies.glide
     compile appDependencies.stetho
+    compile appDependencies.javaxInject
     provided appDependencies.javaxAnnotation
 
     //Development
     compile developmentDependencies.leakCanary
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
 }
 
 greendao {

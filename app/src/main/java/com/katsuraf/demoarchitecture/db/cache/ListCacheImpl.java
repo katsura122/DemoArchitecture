@@ -40,13 +40,12 @@ public class ListCacheImpl implements ListCache {
      * Constructor of the class {@link ListCacheImpl}.
      *
      * @param context  A
-     * @param dbHelper {@link DBHelper} for saving serialized objects to the file system.
      */
-    public ListCacheImpl(Context context, DBHelper dbHelper) {
-        if (context == null || dbHelper == null) {
+    public ListCacheImpl(Context context) {
+        if (context == null) {
             throw new IllegalArgumentException("Invalid null parameter");
         }
-        this.dbHelper = dbHelper;
+        this.dbHelper = new DBHelper(context);
     }
 
     @Override
