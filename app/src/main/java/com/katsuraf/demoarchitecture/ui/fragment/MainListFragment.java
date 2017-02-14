@@ -1,5 +1,6 @@
 package com.katsuraf.demoarchitecture.ui.fragment;
 
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -96,7 +97,8 @@ public class MainListFragment extends BaseFragment implements IMainListView,
             @Override
             public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view,
                                           final int position) {
-                showToast(((ListItemEntity) adapter.getData().get(position)).getTitle());
+                String uri = Uri.decode(((ListItemEntity) adapter.getData().get(position)).getLink());
+                showToast(uri);
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.katsuraf.demoarchitecture.net.converter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.katsuraf.demoarchitecture.net.exception.ApiException;
 import com.katsuraf.demoarchitecture.net.exception.ResultException;
@@ -27,7 +29,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     public T convert(ResponseBody value) throws IOException {
         String response = value.string();
         try {
-//            Log.d("Network", "response>>" + response);
+            Log.d("Network", "response>>" + response);
             JSONObject jsonObject = new JSONObject(response);
             //ResultResponse 只解析result字段
             ResultResponse resultResponse = gson.fromJson(response, ResultResponse.class);

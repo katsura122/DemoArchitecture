@@ -23,15 +23,6 @@ public class OkHttpClientProvider {
     }
 
     @Singleton
-    public OkHttpClient getSimpleClient() {
-        OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.connectTimeout(NetConstant.DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        builder.readTimeout(NetConstant.DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        builder.writeTimeout(NetConstant.DEFAULT_WRITE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        return builder.build();
-    }
-
-    @Singleton
     public OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.connectTimeout(NetConstant.DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);

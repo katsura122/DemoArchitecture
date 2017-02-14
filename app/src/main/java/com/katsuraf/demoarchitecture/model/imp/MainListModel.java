@@ -30,12 +30,16 @@ public class MainListModel implements IMainListModel {
 
     private final Consumer<ListResponse> saveToCache = listResponse -> {
         if (listResponse != null) {
-            if (mMainListRequest.getPage() == 1) {
+            if (mMainListRequest.getListType() == null) {
+                mMainListRequest.setListType(0);
+            }
+            if (mMainListRequest.getPage() == null) {
+                mMainListRequest.setPage(1);
                 MainListModel.this.mListCache.clearList(mMainListRequest.getListType());
             }
             MainListModel.this.mListCache.putListData(listResponse.getList(), mMainListRequest.getListType());
             MainListModel.this.mListCache.putPageState(mMainListRequest.getListType(),
-                    mMainListRequest.getPage(), mMainListRequest.getTimestamp());
+                    mMainListRequest.getPage(), listResponse.getTimestamp());
         }
     };
 
@@ -50,8 +54,9 @@ public class MainListModel implements IMainListModel {
         switch (loadMode) {
             case FIRST_LOAD:
             case REFRESH:
-                mMainListRequest.setPage(1);
-                mMainListRequest.setTimestamp(0L);
+                mMainListRequest.setPage(null);
+                mMainListRequest.setTimestamp(null);
+                mMainListRequest.setListType(null);
                 break;
             case LOAD_MORE:
                 PageStateEntity pageState = mListCache.getPageState(0);
@@ -64,9 +69,9 @@ public class MainListModel implements IMainListModel {
         new RestClient(mContext)
                 .getApiService()
                 .getListData(mMainListRequest)
-                .doOnNext(saveToCache)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(saveToCache)
                 .subscribe(new MainListSubscriber(mContext));
     }
 

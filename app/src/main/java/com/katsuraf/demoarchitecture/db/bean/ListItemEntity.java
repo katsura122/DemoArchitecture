@@ -12,28 +12,28 @@ public class ListItemEntity {
     @Id(autoincrement = true)
     private Long id;
 
-    @SerializedName("Id")
+    @SerializedName("NewsId")
     private long itemId;
 
-    @SerializedName("Type")
+    @SerializedName("ArticleType")
     private int type;
 
-    @SerializedName("Title")
+    @SerializedName("NewsTitle")
     private String title;
 
-    @SerializedName("SubTitle")
+    @SerializedName("NewsSubTitle")
     private String subTitle;
 
-    @SerializedName("Link")
+    @SerializedName("ContentUrl")
     private String link;
 
-    @SerializedName("Image")
+    @SerializedName("ImageUrl")
     private String imageLink;
 
-    @SerializedName("Date")
+    @SerializedName("NewsDate")
     private String date;
 
-    @SerializedName("ReadCount")
+    @SerializedName("HasRead")
     private String readCount;
 
     @SerializedName("CommentCount")

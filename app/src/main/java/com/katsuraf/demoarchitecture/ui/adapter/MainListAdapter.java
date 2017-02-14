@@ -1,5 +1,6 @@
 package com.katsuraf.demoarchitecture.ui.adapter;
 
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -16,8 +17,9 @@ public class MainListAdapter extends BaseQuickAdapter<ListItemEntity, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, ListItemEntity listItem) {
-        helper.setText(R.id.txt_title, listItem.getTitle());
-        Glide.with(mContext).load(listItem.getImageLink())
+        helper.setText(R.id.txt_title, listItem.getTitle())
+                .setText(R.id.txt_sub_title, listItem.getSubTitle());
+        Glide.with(mContext).load(Uri.decode(listItem.getImageLink()))
                 .crossFade()
                 .placeholder(R.drawable.ic_image_default)
                 .into((ImageView) helper.getView(R.id.img_news));

@@ -3,10 +3,10 @@ package com.katsuraf.demoarchitecture.response;
 import com.google.gson.annotations.SerializedName;
 
 public class PageResponse {
-    @SerializedName("Timestamp")
+    @SerializedName("TimeStamp")
     protected Long timestamp;
 
-    @SerializedName("PageNum")
+    @SerializedName("Page")
     protected Integer pageNo;
 
     @SerializedName("TotalPageNum")

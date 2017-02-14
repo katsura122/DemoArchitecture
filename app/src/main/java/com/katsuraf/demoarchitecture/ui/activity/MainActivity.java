@@ -21,6 +21,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
-        RxView.clicks(mBtnEnter).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe();
+        RxView.clicks(mBtnEnter).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(s ->
+                startActivity(MainListActivity.getCallingIntent(this)));
     }
 }

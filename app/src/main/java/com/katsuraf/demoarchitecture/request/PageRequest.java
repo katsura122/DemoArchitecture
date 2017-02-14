@@ -3,11 +3,14 @@ package com.katsuraf.demoarchitecture.request;
 import com.google.gson.annotations.SerializedName;
 
 public class PageRequest {
-    @SerializedName("Timestamp")
-    private Long timestamp = 0L;
+    @SerializedName("TimeStamp")
+    private Long timestamp;
 
-    @SerializedName("PageNum")
-    private Integer page = 1;
+    @SerializedName("Page")
+    private Integer page;
+
+    @SerializedName("ViewTimes")
+    private int viewTimes;
 
     public PageRequest() {
     }
@@ -26,5 +29,13 @@ public class PageRequest {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public int getViewTimes() {
+        return viewTimes;
+    }
+
+    public void setViewTimes(int viewTimes) {
+        this.viewTimes = viewTimes;
     }
 }

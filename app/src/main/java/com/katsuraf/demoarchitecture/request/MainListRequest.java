@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 public class MainListRequest extends PageRequest {
 
     @SerializedName("ListType")
-    private int listType;
+    private Integer listType;
 
-    public int getListType() {
+    public Integer getListType() {
         return listType;
     }
 
-    public void setListType(int listType) {
+    public void setListType(Integer listType) {
         this.listType = listType;
     }
 

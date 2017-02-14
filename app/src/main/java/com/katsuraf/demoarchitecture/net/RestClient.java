@@ -4,11 +4,15 @@ import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.katsuraf.demoarchitecture.constants.ApiConstant;
+import com.katsuraf.demoarchitecture.constants.NetConstant;
 import com.katsuraf.demoarchitecture.net.converter.ResponseConverterFactory;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 @Singleton

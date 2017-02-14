@@ -40,7 +40,7 @@ class UserAgent {
     @SerializedName("VersionCode")
     private String appVersionCode = BuildConfig.VERSION_CODE + "";
 
-    private Context context;
+    private transient Context context;
 
     public UserAgent(Context context) {
         this.context = context;

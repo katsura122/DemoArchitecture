@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public class ListResponse extends PageResponse {
-    @SerializedName("List")
+    @SerializedName("Normal")
     private List<ListItemEntity> list;
 
     public List<ListItemEntity> getList() {
