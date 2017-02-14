@@ -1,9 +1,18 @@
 package com.katsuraf.demoarchitecture.ui.activity;
 
+import android.widget.Button;
+
+import com.jakewharton.rxbinding.view.RxView;
 import com.katsuraf.demoarchitecture.R;
-import com.katsuraf.demoarchitecture.ui.fragment.MainListFragment;
+
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
+
+    @BindView(R.id.btn_enter)
+    Button mBtnEnter;
 
     @Override
     protected int getContentViewLayoutID() {
@@ -12,6 +21,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
-        addFragment(R.id.fragment_container, MainListFragment.getInstance());
+        RxView.clicks(mBtnEnter).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe();
     }
 }

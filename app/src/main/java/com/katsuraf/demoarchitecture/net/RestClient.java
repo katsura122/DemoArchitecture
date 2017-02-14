@@ -20,7 +20,7 @@ public class RestClient {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiConstant.BASE_URI)
                 .addConverterFactory(ResponseConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClientProvider(context).getSimpleClient())
+                .client(new OkHttpClientProvider(context).getOkHttpClient())
                 .build();
         apiService = retrofit.create(ApiService.class);
     }

@@ -14,14 +14,14 @@ ext {
     //Libraries
     butterKnifeVersion = '8.4.0'
     supportLibVersion = '25.1.0'
-    rxJavaVersion = '2.0.2'
+    rxJavaVersion = '2.0.5'
     rxAndroidVersion = '2.0.1'
     rxBindingVersion = '1.0.0'
     javaxAnnotationVersion = '1.0'
     javaxInjectVersion = '1'
     okHttpVersion = '3.4.1'
     gsonVersion = '2.7'
-    designVersion = '23.4.0'
+    designVersion = '24.2.0'
     greendaoVersion = '3.2.0'
     retrofitVersion = '2.1.0'
     retrofitAdapterVersion = "1.0.0"
@@ -45,6 +45,7 @@ ext {
             javaxAnnotation    : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             javaxInject        : "javax.inject:javax.inject:${javaxInjectVersion}",
             design             : "com.android.support:design:${designVersion}",
+            cardView           : "com.android.support:cardview-v7:${designVersion}",
             greendao           : "org.greenrobot:greendao:${greendaoVersion}",
             okHttp             : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
             okHttpLogIntercepor: "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",

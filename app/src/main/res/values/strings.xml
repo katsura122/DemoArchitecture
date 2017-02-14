@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">DemoArchitecture</string>
 
+    <string name="button_enter">ENTER</string>
+
     <string name="button_text_retry">重试</string>
     <string name="button_text_confirm">确定</string>
     <string name="button_text_cancel">取消</string>

@@ -83,11 +83,11 @@ public class MainListFragment extends BaseFragment implements IMainListView,
 
     @Override
     protected int getContentViewLayoutID() {
-        return R.layout.fragment_data_list;
+        return R.layout.fragment_main_list;
     }
 
     private void initAdapter() {
-        mAdapter = new MainListAdapter(R.layout.layout_main_list_cell);
+        mAdapter = new MainListAdapter(R.layout.lay_main_list_cell);
         mAdapter.setOnLoadMoreListener(this);
         mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         mRecyclerView.setAdapter(mAdapter);
