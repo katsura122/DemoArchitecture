@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/lay_toolbar" />
+
+    <ProgressBar
+        android:id="@+id/progress_web"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp" />
+
+    <FrameLayout
+        android:id="@+id/lay_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lay_non_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.katsuraf.demoarchitecture.ui.widget.VideoEnabledWebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <include layout="@layout/view_retry" />
+
+</LinearLayout>

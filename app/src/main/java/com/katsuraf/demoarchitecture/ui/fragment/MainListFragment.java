@@ -1,6 +1,7 @@
 package com.katsuraf.demoarchitecture.ui.fragment;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,14 +12,18 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.jakewharton.rxbinding.view.RxView;
 import com.katsuraf.demoarchitecture.R;
+import com.katsuraf.demoarchitecture.constants.Constant;
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
 import com.katsuraf.demoarchitecture.presenter.MainListPresenter;
+import com.katsuraf.demoarchitecture.ui.activity.WebViewActivity;
 import com.katsuraf.demoarchitecture.ui.adapter.MainListAdapter;
 import com.katsuraf.demoarchitecture.ui.view.IMainListView;
 import com.katsuraf.demoarchitecture.utils.NetworkUtil;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
@@ -37,14 +42,11 @@ public class MainListFragment extends BaseFragment implements IMainListView,
     @BindView(R.id.bt_retry)
     Button mBtnRetry;
 
-    @BindView(R.id.loading_view)
-    View loadingView;
-
-    private LoadMode loadMode;
+    private MainListPresenter mPresenter;
 
     private MainListAdapter mAdapter;
 
-    private MainListPresenter mPresenter;
+    private LoadMode loadMode;
 
     public enum LoadMode {
         FIRST_LOAD,
@@ -80,6 +82,12 @@ public class MainListFragment extends BaseFragment implements IMainListView,
         loadMode = LoadMode.FIRST_LOAD;
         initAdapter();
         getListData();
+        RxView.clicks(mBtnRetry).throttleFirst(1, TimeUnit.SECONDS).subscribe(subs -> {
+            loadMode = LoadMode.FIRST_LOAD;
+            getListData();
+            hideRetry();
+            showLoading();
+        });
     }
 
     @Override
@@ -98,7 +106,9 @@ public class MainListFragment extends BaseFragment implements IMainListView,
             public void onSimpleItemClick(final BaseQuickAdapter adapter, final View view,
                                           final int position) {
                 String uri = Uri.decode(((ListItemEntity) adapter.getData().get(position)).getLink());
-                showToast(uri);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.URI, uri);
+                navigateTo(WebViewActivity.class, bundle);
             }
         });
     }
@@ -162,12 +172,12 @@ public class MainListFragment extends BaseFragment implements IMainListView,
 
     @Override
     public void showRetry() {
-
+        mLayoutRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideRetry() {
-
+        mLayoutRetry.setVisibility(View.GONE);
     }
 
     @Override

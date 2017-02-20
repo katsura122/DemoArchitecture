@@ -21,7 +21,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsAndEvents() {
-        RxView.clicks(mBtnEnter).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(s ->
-                startActivity(MainListActivity.getCallingIntent(this)));
+        RxView.clicks(mBtnEnter).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(s -> navigateTo(MainListActivity.class, null));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setSwipeBackEnable(false);
+    }
+
+    @Override
+    protected TransitionMode getOverridePendingTransitionMode() {
+        return TransitionMode.FADE;
     }
 }

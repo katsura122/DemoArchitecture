@@ -15,14 +15,6 @@
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/loading_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/view_retry" />
-
-    </LinearLayout>
+    <include layout="@layout/view_retry" />
 
 </RelativeLayout>
