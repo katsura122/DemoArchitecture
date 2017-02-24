@@ -20,6 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -39,6 +40,9 @@ import butterknife.ButterKnife;
 
 public class WebViewActivity extends BaseActivity implements ILoadDataView {
     private final static String TAG = WebViewActivity.class.getSimpleName();
+
+    @BindView(R.id.img_back)
+    ImageView imgBtnBack;
 
     @BindView(R.id.web_view)
     VideoEnabledWebView mWebView;
@@ -71,6 +75,8 @@ public class WebViewActivity extends BaseActivity implements ILoadDataView {
                 mWebView.reload();
             }
         });
+        RxView.clicks(imgBtnBack).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(s -> finish());
     }
 
     @Override

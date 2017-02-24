@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -30,6 +31,9 @@ import butterknife.BindView;
 
 public class MainListFragment extends BaseLazyFragment implements IMainListView,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+
+    @BindView(R.id.img_back)
+    ImageView imgBtnBack;
 
     @BindView(R.id.rv_list)
     RecyclerView mRecyclerView;
@@ -89,6 +93,8 @@ public class MainListFragment extends BaseLazyFragment implements IMainListView,
             hideRetry();
             showLoading();
         });
+        RxView.clicks(imgBtnBack).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(s -> getActivity().finish());
     }
 
     @Override
