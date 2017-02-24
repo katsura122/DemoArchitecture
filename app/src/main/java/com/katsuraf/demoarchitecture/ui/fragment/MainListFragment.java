@@ -21,13 +21,14 @@ import com.katsuraf.demoarchitecture.ui.activity.WebViewActivity;
 import com.katsuraf.demoarchitecture.ui.adapter.MainListAdapter;
 import com.katsuraf.demoarchitecture.ui.view.IMainListView;
 import com.katsuraf.demoarchitecture.utils.NetworkUtil;
+import com.katsuraf.library.base.BaseLazyFragment;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 
-public class MainListFragment extends BaseFragment implements IMainListView,
+public class MainListFragment extends BaseLazyFragment implements IMainListView,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     @BindView(R.id.rv_list)

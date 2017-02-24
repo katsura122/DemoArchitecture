@@ -8,11 +8,14 @@ import android.support.v4.app.FragmentTransaction;
 import com.katsuraf.library.base.BaseSwipeBackCompatActivity;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Base {@link Activity} class for every Activity in this application.
  */
 public abstract class BaseActivity extends BaseSwipeBackCompatActivity {
+
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +25,13 @@ public abstract class BaseActivity extends BaseSwipeBackCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbinder.unbind();
     }
 
     /**

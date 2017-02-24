@@ -26,20 +26,9 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment extends BaseLazyFragment {
 
-    private Unbinder unbinder;
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (Constants.DEBUG) {
-//            TanZiApplication.getRefWatcher(getContext()).watch(this);
-//        }
-//    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
     }
 
     @Override
@@ -52,10 +41,5 @@ public abstract class BaseFragment extends BaseLazyFragment {
         super.onPause();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
 }

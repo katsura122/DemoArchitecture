@@ -109,7 +109,6 @@ dependencies {
     compile appDependencies.glide
     compile appDependencies.stetho
     compile appDependencies.javaxInject
-    provided appDependencies.javaxAnnotation
 
     //Development
     compile developmentDependencies.leakCanary

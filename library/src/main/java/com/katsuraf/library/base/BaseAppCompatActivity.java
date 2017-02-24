@@ -28,8 +28,6 @@ import android.widget.Toast;
 
 import com.katsuraf.library.R;
 
-import butterknife.ButterKnife;
-
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     /**
@@ -72,7 +70,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         } else {
             throw new IllegalArgumentException("You must return a right contentView layout resource Id");
         }
-
         initViewsAndEvents();
     }
 
@@ -80,7 +77,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
     }
 
     @Override

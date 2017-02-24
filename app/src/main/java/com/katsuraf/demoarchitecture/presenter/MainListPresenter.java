@@ -3,6 +3,7 @@ package com.katsuraf.demoarchitecture.presenter;
 import android.content.Context;
 
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
+import com.katsuraf.demoarchitecture.model.IMainListModel;
 import com.katsuraf.demoarchitecture.model.imp.MainListModel;
 import com.katsuraf.demoarchitecture.net.OnHttpCallBack;
 import com.katsuraf.demoarchitecture.ui.fragment.MainListFragment;
@@ -12,28 +13,28 @@ import java.util.List;
 
 public class MainListPresenter implements Presenter {
 
-    private IMainListView mIMainListView;
-    private MainListModel mIMainListModel;
+    private IMainListView mMainListView;
+    private IMainListModel mMainListModel;
 
-    public MainListPresenter(Context context, IMainListView IMainListView) {
-        this.mIMainListView = IMainListView;
-        mIMainListModel = new MainListModel(context, new OnListCallBack());
+    public MainListPresenter(Context context, IMainListView mainListView) {
+        this.mMainListView = mainListView;
+        mMainListModel = new MainListModel(context, new OnListCallBack());
     }
 
     public void getListData(MainListFragment.LoadMode loadMode) {
-        mIMainListModel.requestData(loadMode);
+        mMainListModel.requestData(loadMode);
     }
 
     private class OnListCallBack implements OnHttpCallBack<List<ListItemEntity>> {
 
         @Override
-        public void onSuccessful(List<ListItemEntity> listItemEntities) {
-            mIMainListView.showList(listItemEntities);
+        public void onSuccessful(List<ListItemEntity> result) {
+            mMainListView.showList(result);
         }
 
         @Override
         public void onFailed(String errorMsg) {
-            mIMainListView.showError(errorMsg);
+            mMainListView.showError(errorMsg);
         }
     }
 

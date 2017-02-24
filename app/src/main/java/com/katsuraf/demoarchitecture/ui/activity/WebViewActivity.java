@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import com.jakewharton.rxbinding.view.RxView;
 import com.katsuraf.demoarchitecture.R;
 import com.katsuraf.demoarchitecture.constants.Constant;
-import com.katsuraf.demoarchitecture.ui.view.LoadDataView;
+import com.katsuraf.demoarchitecture.ui.view.ILoadDataView;
 import com.katsuraf.demoarchitecture.ui.widget.VideoEnabledWebChromeClient;
 import com.katsuraf.demoarchitecture.ui.widget.VideoEnabledWebView;
 import com.katsuraf.demoarchitecture.utils.NetworkUtil;
@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WebViewActivity extends BaseActivity implements LoadDataView {
+public class WebViewActivity extends BaseActivity implements ILoadDataView {
     private final static String TAG = WebViewActivity.class.getSimpleName();
 
     @BindView(R.id.web_view)
