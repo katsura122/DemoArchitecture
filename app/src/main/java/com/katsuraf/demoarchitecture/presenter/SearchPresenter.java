@@ -5,7 +5,8 @@ import android.content.Context;
 import com.katsuraf.demoarchitecture.db.bean.ListItemEntity;
 import com.katsuraf.demoarchitecture.model.ISearchModel;
 import com.katsuraf.demoarchitecture.model.imp.SearchModel;
-import com.katsuraf.demoarchitecture.net.OnHttpCallBack;
+import com.katsuraf.demoarchitecture.net.DefaultSubscriber;
+import com.katsuraf.demoarchitecture.net.exception.ApiException;
 import com.katsuraf.demoarchitecture.ui.view.IKeywordsView;
 import com.katsuraf.demoarchitecture.ui.view.ISearchResultView;
 
@@ -16,7 +17,7 @@ public class SearchPresenter implements Presenter {
     private ISearchResultView mSearchResultView;
     private ISearchModel mSearchModel;
     private Context context;
-    private String searchKeyword;
+    private String searchKeywords;
     private boolean isSearchMore;
 
     public SearchPresenter(Context context) {
@@ -49,7 +50,7 @@ public class SearchPresenter implements Presenter {
     }
 
     public void doSearch(String keywords, boolean isLoadMore) {
-        this.searchKeyword = keywords;
+        this.searchKeywords = keywords;
         this.isSearchMore = false;
         mSearchModel.querySearch(keywords, isLoadMore);
     }
@@ -69,29 +70,57 @@ public class SearchPresenter implements Presenter {
 
     }
 
-    private class OnGetKeywordsCallBack implements OnHttpCallBack<List<String>> {
+    private final class GetKeywordsSubscriber extends DefaultSubscriber<List<String>> {
 
-        @Override
-        public void onSuccessful(List<String> result) {
-            mKeywordsView.showKeywords(result);
+        GetKeywordsSubscriber(Context context) {
+            super(context);
         }
 
         @Override
-        public void onFailed(String errorMsg) {
-            mKeywordsView.showError(errorMsg);
+        protected void onError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        protected void onPermissionError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        protected void onResultError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        public void onNext(List<String> result) {
+            mKeywordsView.showKeywords(result);
         }
     }
 
-    private class OnQuerySearchCallBack implements OnHttpCallBack<List<ListItemEntity>> {
+    private final class DoSearchSubscriber extends DefaultSubscriber<List<ListItemEntity>> {
 
-        @Override
-        public void onSuccessful(List<ListItemEntity> result) {
-            mSearchResultView.showSearchResult(result, isSearchMore);
+        DoSearchSubscriber(Context context) {
+            super(context);
         }
 
         @Override
-        public void onFailed(String errorMsg) {
-            mKeywordsView.showError(errorMsg);
+        protected void onError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        protected void onPermissionError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        protected void onResultError(ApiException ex) {
+            mKeywordsView.showError(ex.getDisplayMessage());
+        }
+
+        @Override
+        public void onNext(List<ListItemEntity> result) {
+            mSearchResultView.showSearchResult(result, isSearchMore);
         }
     }
 
